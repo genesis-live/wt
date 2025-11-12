@@ -1,0 +1,117 @@
+<!---lab7.html-->
+<!DOCTYPE html>
+<head>
+    <title>Simple Converter</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+</head>
+<body>
+
+<h1>Simple Converter</h1>
+
+<!-- 1. JSON to Object -->
+<h2>1. Convert JSON Text to JavaScript Object</h2>
+<textarea id="jsonInput" placeholder="Enter JSON here..." rows="5" cols="50"></textarea><br>
+<button onclick="convertJsonToObject()">Convert JSON</button>
+<pre id="jsonOutput"></pre>
+
+<!-- 2. JSON to Date -->
+<h2>2. Convert JSON Results into Date</h2>
+<textarea id="jsonDateInput" placeholder='Enter JSON with date in "yyyy-mm-dd" format' rows="3" cols="50"></textarea><br>
+<button onclick="convertJsonToDate()">Convert to Date</button>
+<pre id="jsonDateOutput"></pre>
+
+<!-- 3. JSON to CSV and CSV to JSON -->
+<h2>3. Convert JSON to CSV and CSV to JSON</h2>
+<textarea id="jsonCsvInput" placeholder="Enter JSON for CSV conversion..." rows="5" cols="50"></textarea><br>
+<button onclick="convertJsonToCsv()">JSON to CSV</button>
+<pre id="csvOutput"></pre>
+
+<textarea id="csvInput" placeholder="Enter CSV here..." rows="5" cols="50"></textarea><br>
+<button onclick="convertCsvToJson()">CSV to JSON</button>
+<pre id="jsonCsvOutput"></pre>
+
+<!-- 4. Create Hash -->
+<h2>4. Create Hash from String</h2>
+<input type="text" id="hashInput" placeholder="Enter string to hash"><br>
+<button onclick="createHash()">Create Hash</button>
+<pre id="hashOutput"></pre>
+
+<script>
+function showResult(id, text) {
+    document.getElementById(id).textContent = text;
+}
+
+function convertJsonToObject() {
+    const jsonInput = document.getElementById('jsonInput').value;
+    try {
+        const jsonObject = JSON.parse(jsonInput);
+        showResult('jsonOutput', JSON.stringify(jsonObject, null, 2));
+    } catch {
+        showResult('jsonOutput', 'Invalid JSON');
+    }
+}
+
+function convertJsonToDate() {
+    const input = document.getElementById('jsonDateInput').value;
+    try {
+        const data = JSON.parse(input);
+        if (data.date) {
+            const date = new Date(data.date);
+            if (!isNaN(date)) showResult('jsonDateOutput', date.toString());
+            else showResult('jsonDateOutput', 'Invalid Date Format');
+        } else {
+            showResult('jsonDateOutput', 'No "date" field found');
+        }
+    } catch {
+        showResult('jsonDateOutput', 'Invalid JSON');
+    }
+}
+
+function convertJsonToCsv() {
+    const jsonInput = document.getElementById('jsonCsvInput').value;
+    try {
+        const jsonArray = JSON.parse(jsonInput);
+        if (Array.isArray(jsonArray) && jsonArray.length > 0) {
+            const keys = Object.keys(jsonArray[0]);
+            const csv = [keys.join(','), ...jsonArray.map(row => keys.map(k => row[k]).join(','))].join('\n');
+            showResult('csvOutput', csv);
+        } else {
+            showResult('csvOutput', 'Invalid JSON: Expected an array of objects.');
+        }
+    } catch {
+        showResult('csvOutput', 'Invalid JSON');
+    }
+}
+
+function convertCsvToJson() {
+    const csvInput = document.getElementById('csvInput').value;
+    try {
+        const lines = csvInput.trim().split('\n');
+        if (lines.length > 1) {
+            const keys = lines[0].split(',');
+            const jsonArray = lines.slice(1).map(line => {
+                const values = line.split(',');
+                return keys.reduce((obj, key, i) => (obj[key] = values[i], obj), {});
+            });
+            showResult('jsonCsvOutput', JSON.stringify(jsonArray, null, 2));
+        } else {
+            showResult('jsonCsvOutput', 'Invalid CSV');
+        }
+    } catch {
+        showResult('jsonCsvOutput', 'Invalid CSV');
+    }
+}
+
+function createHash() {
+    const input = document.getElementById('hashInput').value.trim();
+    if (input) {
+        const hash = CryptoJS.SHA256(input).toString();
+        showResult('hashOutput', hash);
+    } else {
+        showResult('hashOutput', 'Input cannot be empty');
+    }
+}
+</script>
+
+</body>
+</html>
