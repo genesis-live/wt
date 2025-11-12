@@ -1,1 +1,65 @@
 /*lab3.css*/
+* {
+    margin: 0 20;
+    padding: 0;
+}
+h2 {
+    font-size: 2em;
+    color: #2c3eff;
+    margin-bottom: 10px;
+}
+h3 {
+    font-size: 1.5em;
+    color: #34ba4f;
+    margin-bottom: 8px;
+}
+hr {
+    border: 0;
+    height: 2px;
+    background-color: #e74c3c;
+    margin: 20px 0;
+}
+p{
+    font-family: Arial, Helvetica, sans-serif;
+    line-height: 1.6;
+    margin: 20px 0;
+}
+div {
+    padding: 15px;
+    border: 1px solid #bdc3c7;
+    background-color: #ecf0f1;
+}
+span {
+    color: #e67e22;
+    font-weight: bold;
+}
+time::before{
+    content: '🕛️';
+}
+figure{
+    text-align: center;
+}
+a{
+    text-decoration: none;
+    padding: 5px;
+    background-color: #8e44ad;
+    color: white;
+}
+a:hover{
+    background-color: #693480;
+    color: white;
+}
+.highlight{
+    background-color: yellow;
+    padding: 3px;
+}
+.center{
+    text-align: center;
+}
+#special-paragraph{
+    font-size: 1.2em;
+    color: #8e44ad;
+    background-color: #f5f5f5;
+    padding: 10px;
+    border-left: 5px solid #8e44ad;
+}
